@@ -1,6 +1,6 @@
 [package]
 name = "xous-sys"
-version = "0.1.0"
+version = "0.1.1"
 edition = "2024"
 description = "Xous kernel system interface"
 license = "MIT OR Apache-2.0"

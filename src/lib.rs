@@ -2,6 +2,8 @@
 mod definitions;
 pub use definitions::*;
 
+pub mod ns;
+
 #[cfg(feature = "unstable_mem")]
 mod unstable;
 #[cfg(feature = "unstable_mem")]

@@ -32,15 +32,25 @@ pub enum Syscall {
 #[derive(Copy, Clone)]
 #[repr(usize)]
 pub enum SyscallResult {
+    /// The operation completed successfully
     Ok = 0,
+    /// An error was encountered, with the exact error stored in $a1
     Error = 1,
+    /// A slice with the offset in $a1 and the length in $a2
     MemoryRange = 3,
+    /// A `u32` connection ID stored in $a1
     ConnectionId = 7,
+    /// A message was received
     Message = 9,
+    /// A `u32` thread id stored in $a1
     ThreadId = 10,
+    /// One scalar value, stored in $a1
     Scalar1 = 14,
+    /// Two scalar values, stored in $a1 and $a2
     Scalar2 = 15,
+    /// Memory that was returned from a syscall, with return values in $a1 and $a2
     MemoryReturned = 18,
+    /// Five scalar values, stored in $a1..=$a5
     Scalar5 = 20,
 }
 
@@ -177,11 +187,16 @@ impl core::error::Error for Error {}
 
 /// Indicates the type of Message that is sent when making a `SendMessage` syscall.
 pub enum InvokeType {
+    /// Mutably lend the buffer to the server
     LendMut = 1,
+    /// Immutably lend
     Lend = 2,
     #[cfg(feature = "unstable_mem")]
+    /// Move the buffer from this process into the server
     Move = 3,
+    /// Send a scalar message to the server without blocking
     Scalar = 4,
+    /// Send a scalar message to the server and wait for a reply
     BlockingScalar = 5,
 }
 
@@ -216,7 +231,9 @@ impl TryInto<usize> for Connection {
 }
 
 #[derive(Debug)]
+/// The specified Server address could not be parsed
 pub enum ServerAddressError {
+    /// the length was not 16 bytes
     InvalidLength,
 }
 
