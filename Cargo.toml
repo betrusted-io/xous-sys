@@ -1,0 +1,12 @@
+[package]
+name = "xous-sys"
+version = "0.1.0"
+edition = "2024"
+description = "Xous kernel system interface"
+license = "MIT OR Apache-2.0"
+
+[dependencies]
+
+[features]
+# Add calls that deal with allocated memory
+unstable_mem = []
