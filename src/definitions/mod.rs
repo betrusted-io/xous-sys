@@ -86,6 +86,34 @@ pub enum Error {
     DoubleFree = 25,
     DebugInProgress = 26,
     InvalidLimit = 27,
+    /// For lookups that result in not found (e.g., searching for keys, resources, names)
+    NotFound = 28,
+    /// Used when try_from/try_into can't map a number into a smaller number of options
+    InvalidCoding = 29,
+    /// Used for ECC errors, glitches, power failures, etc.
+    HardwareError = 30,
+    /// Used when buffers & messages fail to serialize or deserialize
+    SerializationError = 31,
+    /// Used when a call is correct but its arguments are out of bounds, invalid, or otherwise poorly
+    /// specified
+    InvalidArgument = 32,
+    /// Catch-all for networking related problems (unreachable network, etc.)
+    NetworkError = 33,
+    /// Catch-all for storage related problems (particularly write/read ECC errors)
+    StorageError = 34,
+    /// Catch-all for resources that are busy or already allocated
+    Unavailable = 35,
+    /// For failed parsing attempts
+    ParseError = 36,
+    /// Invalid core number on multi-core APIs
+    InvalidCore = 37,
+    /// Reports when verification/check steps fail. Thrown when correctly functioning algorithms determine
+    /// that an object is invalid.
+    VerificationError = 38,
+    /// Used to report higher-severity system security/integrity issues, such as glitch attacks, ECC errors,
+    /// memory violations, bad states for hardened bools. Note that bad passwords/credentials should use
+    /// "AccessDenied"
+    SecurityError = 39,
 }
 
 impl From<usize> for Error {
@@ -116,12 +144,25 @@ impl From<usize> for Error {
             19 => Self::ShareViolation,
             20 => Self::InvalidThread,
             21 => Self::InvalidPid,
+            // 22 is UnknownError
             23 => Self::AccessDenied,
             24 => Self::UseBeforeInit,
             25 => Self::DoubleFree,
             26 => Self::DebugInProgress,
             27 => Self::InvalidLimit,
-            22 | _ => Self::UnknownError,
+            28 => Self::NotFound,
+            29 => Self::InvalidCoding,
+            30 => Self::HardwareError,
+            31 => Self::SerializationError,
+            32 => Self::InvalidArgument,
+            33 => Self::NetworkError,
+            34 => Self::StorageError,
+            35 => Self::Unavailable,
+            36 => Self::ParseError,
+            37 => Self::InvalidCore,
+            38 => Self::VerificationError,
+            39 => Self::SecurityError,
+            _ => Self::UnknownError,
         }
     }
 }
@@ -171,6 +212,18 @@ impl core::fmt::Display for Error {
                 Error::DoubleFree => "the requested resource was freed twice",
                 Error::DebugInProgress => "kernel attempted to activate a thread being debugged",
                 Error::InvalidLimit => "process attempted to adjust an invalid limit",
+                Error::NotFound => "resource or name not found",
+                Error::InvalidCoding => "can't map argument onto a valid coding",
+                Error::HardwareError => "hardware error",
+                Error::SerializationError => "can't (de)serialize buffer or struct",
+                Error::InvalidArgument => "invalid, out of bounds, or poorly specified argument(s)",
+                Error::NetworkError => "network error",
+                Error::StorageError => "storage error",
+                Error::Unavailable => "resources busy or already allocated",
+                Error::ParseError => "parse error",
+                Error::InvalidCore => "invalid core",
+                Error::VerificationError => "verification or integrity check failure on object",
+                Error::SecurityError => "security or system integrity error",
                 Error::UnknownError => "an unknown error occurred",
             }
         )
