@@ -7,6 +7,8 @@ use crate::definitions::{
     Connection, Error, InvokeType, MemoryFlags, Syscall, SyscallResult, ThreadId,
 };
 use crate::syscall;
+extern crate alloc;
+use alloc::boxed::Box;
 
 /// Move the buffer to the server, blocking if
 /// the mailbox is full.
